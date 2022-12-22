@@ -1,0 +1,103 @@
+var sampleData = {
+	apps: [
+    { id: 1, title: 'Lorem', published: true, userId: 123 },
+    { id: 2, title: 'Ipsum', published: false, userId: 123 },
+    { id: 3, title: 'Dolor', published: true, userId: 456 },
+    { id: 4, title: 'Sit', published: true, userId: 789 },
+    { id: 5, title: 'Amet', published: false, userId: 123 },
+    { id: 6, title: 'Et', published: true, userId: 123 }
+  ],
+  organizations: [
+  	{ id: 1, name: 'Google', suspended: true, userId: 123 },
+    { id: 2, name: 'Apple', suspended: false, userId: 456 },
+    { id: 3, name: 'Fliplet', suspended: false, userId: 123 }
+  ]
+}
+
+// @TODO: This is the model/class you should work out
+class User {
+  constructor(obj) {
+  let selectStr;
+  let whereCondition;
+  var sampleData = {
+      apps: [
+        { id: 1, title: 'Lorem', published: true, userId: 123 },
+        { id: 2, title: 'Ipsum', published: false, userId: 123 },
+        { id: 3, title: 'Dolor', published: true, userId: 456 },
+        { id: 4, title: 'Sit', published: true, userId: 789 },
+        { id: 5, title: 'Amet', published: false, userId: 123 },
+        { id: 6, title: 'Et', published: true, userId: 123 }
+      ],
+      organizations: [
+        { id: 1, name: 'Google', suspended: true, userId: 123 },
+        { id: 2, name: 'Apple', suspended: false, userId: 456 },
+        { id: 3, name: 'Fliplet', suspended: false, userId: 123 }
+      ]
+    };
+    if (obj.id) {
+			/* var queryResultApps = _.intersectionBy(sampleData.apps, [{ id: obj.id, title: 'Lorem', published: true}], 'title');
+			      console.log('queryResultApps', queryResultApps);
+			      var queryResultOrg = _.intersectionBy(sampleData.organizations, [{ id: obj.id, name: 'Fliplet', suspended: false}], 'name');
+			      console.log('queryResultOrg', queryResultOrg);
+			      
+			      _.filter(sampleData, ) */
+      
+    }
+  }
+  select (ppty) {
+  	this.selectStr = ppty;
+  	console.log('sampleData[ppty]', sampleData[ppty]);
+  	return sampleData[ppty];
+  }
+  
+  attributes(attr) {
+  	console.log('attr', attr);
+    console.log('sampleData[this.selectStr]', sampleData[this.selectStr]);
+    return sampleData[this.selectStr];
+  }
+  
+  where(condition) {
+  this.whereCondition = condition;
+  	console.log('condition', condition);
+    console.log(_.filter('sampleData[this.selectStr], condition)', _.filter(sampleData[this.selectStr], condition)));
+    return _.filter(sampleData[this.selectStr], condition);
+  }
+  
+  order(orderBy) {
+  	console.log('orderBy', orderBy);
+    console.log('_.sortBy(_.filter(sampleData[this.selectStr], this.whereCondition), orderBy[0])', _.sortBy(_.filter(sampleData[this.selectStr], this.whereCondition), orderBy[0]));
+    return _.sortBy(_.filter(sampleData[this.selectStr], this.whereCondition), orderBy[0]);
+  }
+}
+// ------------------------------------------
+// You shouldn't need to edit below this line
+
+var user = new User({
+	id: 123
+});
+
+// Mimic what a ORM-like query engine would do by filtering the
+// "sampleData" based on the query and the expected result example.
+// Hint: lodash can be quite handly in dealing with this.
+user
+	.select('apps')
+  .attributes(['id', 'title'])
+  .where({ published: true })
+  .order(['title'])
+  .findAll()
+  .then(function (apps) {
+    // The expected result is for the "apps" array is:
+    // [ { id: 6, title: 'Et' }, { id: 1, title: 'Lorem' } ]
+    console.log(apps);
+  })
+  
+user
+	.select('organizations')
+  .attributes(['name'])
+  .where({ suspended: false })
+  .findOne()
+  .then(function (organization) {
+    // The expected result is for the "organization" object is:
+    // { id: 3, name: 'Fliplet' }
+    console.log(organization);
+  })
